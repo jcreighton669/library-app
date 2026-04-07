@@ -25,6 +25,10 @@ app.add_middleware(
 def startup():
     models.Base.metadata.create_all(bind=engine)
 
+@app.get("/")
+def root():
+    return {"message": "Library Tracker API", "version": "1.0.0"}
+
 @app.get("/books", response_model=list[schemas.BookRead])
 def read_books(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_books(db, skip=skip, limit=limit)
